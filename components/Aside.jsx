@@ -1,5 +1,6 @@
 "use client";
 import { changeValue } from "@/lib/features/counter/counterSlice";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -8,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 const Aside = () => {
   const value = useSelector((state) => state.counter.value);
   const dispatch = useDispatch();
+  const { data: session } = useSession();
   return (
     <div
       className={`sm:hidden absolute top-0 z-0 font-semibold text-lg h-screen bg-white  ${
@@ -30,6 +32,13 @@ const Aside = () => {
         >
           <Link href="/" className="w-full">
             Home
+          </Link>
+        </li>
+        <li
+          className={`border-b-2 border-[#00000036] w-full px-4 ${!value ? "hidden" : ""}`}
+        >
+          <Link href={`/${session && session.user.name}`} className="w-full">
+            Your page
           </Link>
         </li>
         <li
